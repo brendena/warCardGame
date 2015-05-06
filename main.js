@@ -66,9 +66,9 @@ peer.on('open', function(id){
 peer.on('connection', function(othersConn) {
   if(typeof conn === 'undefined'){
     conn = peer.connect(othersConn.peer);
-    console.log("asdfasdf");
   }
-  console.log("connectiong");
+  //here is where we define what happens when we send data
+  //to another player
   othersConn.on('data', function(data){
     if(data.hasOwnProperty('card')){
         cards.addCard(data.card)
@@ -76,6 +76,9 @@ peer.on('connection', function(othersConn) {
     }
     else if(data.hasOwnProperty('flipCard')){
         $('#opponentsCard').html(data.flipCard);
+    }
+    else if(data.hasOwnProperty('chat')){
+        addDialog(data.chat,true)
     }
     else{
         console.log(data);
@@ -98,3 +101,17 @@ $('#flipCard').click(function(){
 
 
 
+$('#chatEntered').click(function(){
+    addDialog($('#chatInput').val(),false)
+    conn.send({chat: $('#chatInput').val()});
+});
+
+var addDialog = function(info,opponent){
+    $('#chatDialog').append(function(){
+       var element = document.createElement('p');
+       if(opponent) element.className = 'opponentsChat chatMessage';
+       else element.className = 'yourChat chatMessage';
+       element.innerHTML = info;
+       return element;
+    });
+}

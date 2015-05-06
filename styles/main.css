@@ -1,0 +1,29 @@
+.chatMessage{
+    margin:0 auto;
+    padding-bottom:5px;
+    padding-top:5px;
+}
+.yourChat{
+    background: rgb(173, 235, 255);
+}
+.opponentsChat{
+    background: rgb(255, 255, 128);   
+}
+#chat{
+    left: 100%;
+    width: 200px;
+    position: fixed;
+    margin-left: -300px;
+    bottom: 20px;
+}
+#chatInput{
+    width:100px;
+    float:left;
+}
+#chatEntered{
+    float:left;
+}
+#chatDialog{
+    height:300px;
+    overflow:scroll;
+}
