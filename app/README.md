@@ -28,3 +28,15 @@ http://blog.teamtreehouse.com/creating-reusable-markup-with-the-html-template-el
 
 //more on what polmer does to get custom components
 http://www.infoq.com/news/2013/05/webcomponents
+
+
+
+
+
+/*books 
+http://www.techbooksforfree.com/
+http://natureofcode.com/
+https://github.com/vhf/free-programming-books/blob/master/free-programming-books.md
+http://www.onlineprogrammingbooks.com/
+http://www.sketchingwithcss.com/
+*/

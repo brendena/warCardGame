@@ -1,13 +1,11 @@
 //conn is distant person
-var conn;
-//peer is local person
-var peer = new Peer({key: 'obug60hpyawwb3xr'});
+
+
 
 
 var deckObject = function(){
     //your deck
     var playersDeck = new Array();
-    
     /*
     creates the deck and shuffles it
     */
@@ -39,14 +37,14 @@ var deckObject = function(){
         for(var i = deck.length-1; i  > 0; i-=2){
             console.log(deck[i]);
             playersDeck.push(deck[i])
-            conn.send({card: deck[i-1]});
+            connHelper.sCard(deck[i-1]);
         }
     };
     
     var removeTopCard = function(){
         var firstCard = playersDeck[0];
         playersDeck.shift(); //removes first card
-        conn.send({flipCard: firstCard});
+        connHelper.sCardSent(firstCard);
         return firstCard;
     };
     var addCard = function(value){
@@ -89,11 +87,11 @@ var deckObject = function(){
             addCard(playersCard);
         }
         else{
-            conn.send({'card': playersCard});
-            conn.send({'card': opponentsCard});
+            connHelper.sCardSent(playersCard);
+            connHelper.sCardSent(opponentsCard);
         }
         if(outCome <= 1 ){
-            conn.send({'reset':true});
+            connHelper.sRest();
         }
         
     };
@@ -109,87 +107,3 @@ var deckObject = function(){
         war:war
     };
 }();
-
-
-//when i create my connection
-peer.on('open', function(id){
-    $('#pid').text(id);
-});
-
-//when i receive data
-peer.on('connection', function(othersConn) {
-  if(typeof conn === 'undefined'){
-    conn = peer.connect(othersConn.peer);
-  }
-  //here is where we define what happens when we send data
-  //to another player
-  othersConn.on('data', function(data){
-    if(data.hasOwnProperty('card')){
-        deckObject.addCard(data.card)
-        console.log(data)
-    }
-    else if(data.hasOwnProperty('flipCard')){
-        $('#opponentsCard').html(data.flipCard);
-        $('#opponentsCardObject').toggleClass('flippedToBack');
-        console.log('flipped');
-    }
-    else if(data.hasOwnProperty('chat')){
-        addDialog(data.chat,true)
-    }
-    else if(data.hasOwnProperty('reset')){
-        resetCards();
-    }
-    else{
-        console.log(data);
-    }
-  });
-});
-
-//when clicked it takes the value from connectWith input and connect with peer.
-$('#connectWithButton').click(function(){
-    conn = peer.connect($('#connectWith').val());
-    conn.on('open', function(){
-      deckObject.newGame();
-      conn.send('hi!');
-    });
-});
-
-
-$('#chatEntered').click(function(){
-    addDialog($('#chatInput').val(),false)
-    conn.send({chat: $('#chatInput').val()});
-});
-
-var addDialog = function(info,opponent){
-    $('#chatDialog').append(function(){
-       var element = document.createElement('p');
-       if(opponent) element.className = 'opponentsChat chatMessage';
-       else element.className = 'yourChat chatMessage';
-       element.innerHTML = info;
-       return element;
-    });
-}
-
-var resetCards = function(){
-    console.log("reset")
-    setTimeout(function(){
-        $('#opponentsCardObject').toggleClass('flippedToBack');
-        $('#playerCardObject').toggleClass('flippedToBack');
-    },2000);
-
-}
-
-$('#playerCardObject').click(function(){
-    //if the cards on its back then you can flip it
-    if($(this).hasClass('flippedToBack')){
-        $(this).toggleClass('flippedToBack');
-        //remove top card and add it to the card and send message to other player
-        $('#playersCard').html(deckObject.removeTopCard());
-        //check to see if the other players deckObject flipped
-        if(!$('#opponentsCardObject').hasClass('flippedToBack')){
-            deckObject.battle($('#opponentsCard').html(),$('#playersCard').html());
-            resetCards();
-            console.log('war');
-        }
-    }
-});
