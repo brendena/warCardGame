@@ -9,8 +9,9 @@ peer.on('open', function(id){
 
 //when i receive data
 peer.on('connection', function(othersConn) {
-    connHelper.init(peer.connect(othersConn.peer),function(){
-        $("#gameConnectionBox").css('display','none');
+    connHelper.init(
+    function(){return peer.connect(othersConn.peer);},
+    function(){ $("#gameConnectionBox").css('display','none');
     })
 
   //here is where we define what happens when we send data
@@ -21,16 +22,21 @@ peer.on('connection', function(othersConn) {
         console.log(data)
     }
     else if(data.hasOwnProperty('flipCard')){
+        flipOppenentsCard();
         console.log('flipped');
     }
     else if(data.hasOwnProperty('sentCard')){
-        addOpponentsCard(data.flipCard)
+        addOpponentsCard(data.sentCard)
     }
     else if(data.hasOwnProperty('chat')){
         addDialog(data.chat,true)
     }
     else if(data.hasOwnProperty('reset')){
-        resetCards();
+        //resetCards();
+        $("#opponent").html("");
+        $("#player").html("");
+        playingField.handReset();
+        console.log("reset");
     }
     else{
         console.log(data);
@@ -77,7 +83,7 @@ var connHelper  = function(){
     */
     var connInit = function(connection, callBackFunction){
         if(typeof conn === 'undefined'){
-            conn = connection;
+            conn = connection();
             conn.on('open',callBackFunction);
         }
     };

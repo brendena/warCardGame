@@ -15,9 +15,12 @@ var addDialog = function(info,opponent){
 
 //when clicked it takes the value from connectWith input and connect with peer.
 $('#connectWithButton').click(function(){
-    connHelper.init(peer.connect($('#connectWith').val()),function(){
-      deckObject.newGame();
-      $("#gameConnectionBox").css('display','none');
+    connHelper.init(
+      function(){
+        return peer.connect($('#connectWith').val());},
+      function(){
+        deckObject.newGame();
+        $("#gameConnectionBox").css('display','none');
     });
 });
 
