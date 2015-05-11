@@ -33,12 +33,11 @@
     display:flex;
     align-items: center;
     justify-content: center;
-    /*pather found here
-    http://lea.verou.me/css3patterns/#carbon-fibre
-    */
     background-image:url(../img/background.svg);
     background-repeat:no-repeat;
     background-size:100%;
+    top:-1px;/*weird it was still showing stuff at the top*/
+    overflow:hide;
     
 }
 #gameConnectionInnerBox{

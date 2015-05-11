@@ -10,6 +10,8 @@
 
 //make the board look pritty
 
+//i've added the code to create the qrcode but it doesn't to anything with the information
+
 //get svg background to work
 https://css-tricks.com/using-svg/
 http://www.w3schools.com/svg/svg_inhtml.asp

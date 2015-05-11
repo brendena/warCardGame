@@ -32,10 +32,11 @@ peer.on('connection', function(othersConn) {
         addDialog(data.chat,true)
     }
     else if(data.hasOwnProperty('reset')){
-
-        $("#opponent").html("");
-        $("#player").html("");
         
+        for(var i = 1; i <= playingField.getHandSize.player(); i++){
+            animate.toDeck("player",$("#player .container:last"));
+            animate.toDeck("opponent",$("#opponent .container:last"))
+        }
         playingField.handReset();
         console.log("reset");
     }

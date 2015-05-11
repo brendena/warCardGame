@@ -112,6 +112,72 @@ var playingField = function(){
 }();
 
 
+var animate = function(){
+    var setTopLeft = function(top,left,element){
+        $(element).css("top",top)
+                  .css("left",left);
+    }
+    var topLeftForDeck = function(type,element){
+        var $deck = $("#" + type + "Deck");
+        setTopLeft($deck.offset().top,$deck.offset().left - $deck.width(),element)
+    }
+    var topLeftForPlayingField = function(type,element){
+        
+        var $playingField = $("#" + type);
+        setTopLeft($playingField.position().top,($playingField.width() / 2) - $(element).width()/2,element)
+    }
+    var setUpCardReturn = function(type,element){
+        var offset = $(element).offset();
+            //subtract the width so the card stay in the same spot
+        setTopLeft(offset.top,offset.left - $(element).width(),element); 
+        cssObsolute(element);
+        
+    }
+    var cssObsolute = function(element){
+        $(element).css("position","absolute");
+    }
+    var cssRelative = function(element){
+        $(element).css("position","relative");
+        $(element).css("top","0px");
+        $(element).css("left","0px");
+    }
+    
+    var toPlayingField = function(type, element){
+        $(element).appendTo(".site-wrap");
+        cssObsolute(element);
+        topLeftForDeck(type,element);
+        
+        setTimeout(function(){
+            topLeftForPlayingField(type,element);
+        },100);
+        
+        setTimeout(function(){
+            $(element).appendTo("#" + type);
+            cssRelative(element);
+        },1200)
+        
+    }
+    
+    var toDeck = function(type, element){
+            //added this so you don't see it go from relative to absolute
+        $(element).css("transition-duration","0s");
+        setUpCardReturn(type,element);
+        $(element).appendTo(".site-wrap");
+            //readd it so you can see the topLeftForDeck part
+        $(element).css("transition-duration","1s");
+        
+        topLeftForDeck(type,element);
+        
+        setTimeout(function(){
+            $(element).remove();
+        },1200);
+    }
+    return{
+        toPlayingField: toPlayingField,
+        toDeck: toDeck
+    }
+}();
+
 
 
 
@@ -171,7 +237,9 @@ var addCardPlayingField = function(type,number,cardValue,eventHandler,flippedToB
     else{
         element.childNodes[1].className = "card flippedToBack";
     }
-    $('#' + type).append(element)
+    console.log()
+    animate.toPlayingField(type,element);
+    
     if(eventHandler){
         $("#"+type+"CardObject"+number).on('click', function(){
             console.log("click");
@@ -193,18 +261,16 @@ var addCardPlayingField = function(type,number,cardValue,eventHandler,flippedToB
         playingField.addCard.opponent(cardValue);
     }
     
-    /* jquery functions to find position
-        /*offset()*/
-        /*position()*/
-        /*width()*/
-    
 }
 
 
 $('.deck').click(function(){
+    
    if(playingField.getHandSize.player() == 0){
        addCardPlayingField("player",1,deckObject.removeTopCard(),true,false);
    }
+   
+   //addCardPlayingField("player",1,5,true,false);
 });
 
 var addOpponentsCard = function(cardValue){
