@@ -13,7 +13,7 @@
     height: 100%;
     position: absolute;
     transform-style: preserve-3d; /*looks weird*/
-    transition: transform 1s;
+    transition: 1s;
 }
 
 .card figure {

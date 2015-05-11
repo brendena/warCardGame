@@ -25,6 +25,16 @@ $('#connectWithButton').click(function(){
 });
 
 
+$('#createQRCode').click(function(){
+    console.log(document.URL + peer.id);
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+    	width : 100,
+    	height : 100
+    });
+    qrcode.makeCode(document.URL + peer.id);
+    $("#createQRCode").remove();
+});
+
 
 
 

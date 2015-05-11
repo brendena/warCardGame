@@ -192,6 +192,12 @@ var addCardPlayingField = function(type,number,cardValue,eventHandler,flippedToB
     else if(type == "opponent"){
         playingField.addCard.opponent(cardValue);
     }
+    
+    /* jquery functions to find position
+        /*offset()*/
+        /*position()*/
+        /*width()*/
+    
 }
 
 

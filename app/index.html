@@ -20,8 +20,11 @@
 			<input type="text" name="connectionId" id="connectWith"/>
 			<button id="connectWithButton">click to connect</button>
 			<p>&hearts;</p>
+			<button id="createQRCode">create QR Code </button>
+			<div id="qrcode"></div>
 		</div>
 	</div>
+	
 	<ul class="navigation">
 		<li class="nav-item"><a href="#">asdf</a></li>
 		<li class="nav-item"><a href="#">ddd</a></li>
@@ -46,6 +49,9 @@
 		<section id="opponent" class="cardArea">
 		</section>
 		<section id="player" class="cardArea">
+			<div>
+				
+			</div>
 		</section>
 		<div>
 			<p id="playerCardCount">asdf</p>
@@ -64,7 +70,7 @@
 		</section>
 	</template>
 	
-	
+	<script type="text/javascript" src="javascript/qrcode.min.js"></script>
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="bower_components/peerjs/peer.js"></script>
 	<script type="text/javascript" src="javascript/perrOn.js"></script>
