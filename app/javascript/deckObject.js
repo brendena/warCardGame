@@ -6,11 +6,11 @@
 var deckObject = function(){
     //your deck
     var playersDeck = new Array();
+    
+    
     /*
     creates the deck and shuffles it
     */
-
-    
     var createShuffledDeck =  function(){
         var values = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
         var types = ['&hearts;','&diams;','&clubs;','&spades;'];
@@ -45,12 +45,16 @@ var deckObject = function(){
         var firstCard = playersDeck[0];
         playersDeck.shift(); //removes first card
         connHelper.sCardSent(firstCard);
+        updatePlayerCount();
         return firstCard;
     };
     var addCard = function(value){
         playersDeck.push(value);
+        updatePlayerCount();
     }
-
+    var updatePlayerCount = function(){
+        $("#playerCardCount").html(playersDeck.length);
+    }
     return{
         newGame:spreadCardOut,
         removeTopCard:removeTopCard,

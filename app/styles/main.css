@@ -12,8 +12,6 @@
 #chat{
     left: 100%;
     width: 200px;
-    position: fixed;
-    margin-left: -300px;
     bottom: 20px;
 }
 #chatInput{
@@ -31,28 +29,30 @@
     width:100%;
     height:100%;
     position:fixed;
-    z-index:2;
+    z-index:5;
     display:flex;
     align-items: center;
     justify-content: center;
     /*pather found here
     http://lea.verou.me/css3patterns/#carbon-fibre
     */
-    background:
-    radial-gradient(black 15%, transparent 16%) 0 0,
-    radial-gradient(black 15%, transparent 16%) 8px 8px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
-    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
-    background-color:#833737;
-    background-size:16px 16px;
+    background-image:url(../img/background.svg);
+    background-repeat:no-repeat;
+    background-size:100%;
+    
 }
 #gameConnectionInnerBox{
-    width:200px;
-    height:200px;
+    width:350px;
+    height:350px;
     padding:50px;
     opacity:1;
     background:rgba(255,255,255,.9);
     border-radius:25px;
+    border-style: solid;
+    border-width: 5px;
+    border-color: rgb(242, 0, 0);
+    border-bottom-color: black;
+    border-top-color: black;
 }
 body{
     margin: 0;

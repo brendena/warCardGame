@@ -32,9 +32,10 @@ peer.on('connection', function(othersConn) {
         addDialog(data.chat,true)
     }
     else if(data.hasOwnProperty('reset')){
-        //resetCards();
+
         $("#opponent").html("");
         $("#player").html("");
+        
         playingField.handReset();
         console.log("reset");
     }

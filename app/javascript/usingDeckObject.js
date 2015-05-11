@@ -9,12 +9,14 @@ var playingField = function(){
         opponentHand.push(card);
     }
     var getPlayerHandSize = function(){
+        
         return playerHand.length;
     }
     var getOpponentsHandSize = function(){
         return opponentHand.length;
     }
     var flushBothHands = function(){
+        console.log("flushed");
         playerHand = new Array();
         opponentHand = new Array();
     }
@@ -41,10 +43,6 @@ var playingField = function(){
         compareCards : function(opponentsCard, playerCard){
             var oCard = cardHelperObject.spliceCard(opponentsCard);
             var pCard = cardHelperObject.spliceCard(playerCard);
-            console.log(oCard)
-            console.log(pCard)
-            console.log("testing war so your only ever going to get war")
-            /*
                 //opponent Wins
             if(cardValues[oCard] > cardValues[pCard]){
                 return 0;
@@ -53,11 +51,11 @@ var playingField = function(){
             else if(cardValues[oCard] <  cardValues[pCard]){
                 return 1;
             }
-            */
+            
             // if ther equal
-            //else{
+            else{
                 return 2;
-            //}
+            }
         }
     }
     /*
@@ -65,12 +63,12 @@ var playingField = function(){
     */
     var checkForBattle = function(){
         
-        if(!$('#playerCardObject1').hasClass('flippedToBack') && !$('#opponentCardObject1').hasClass('flippedToBack')
+        if(!$('#playerCardObject' + getPlayerHandSize()).hasClass('flippedToBack') && !$('#opponentCardObject' + getOpponentsHandSize()).hasClass('flippedToBack')
            && getPlayerHandSize() === getOpponentsHandSize()){
             console.log('war');
-            console.log(playerHand[0] + " " + opponentHand[0])
+            console.log(playerHand[getPlayerHandSize()-1] + " " + opponentHand[getOpponentsHandSize() -1])
             
-            if(battle(opponentHand[0],playerHand[0]))
+            if(battle(opponentHand[getOpponentsHandSize() - 1 ],playerHand[getPlayerHandSize() -1 ]))
                 return 1;
         }
         return 0;
@@ -84,13 +82,8 @@ var playingField = function(){
         else  if( outCome  === 1){ //player wins
             addPlayersHandBackToDeck();
         }
-        else{
-            addOpponentHandToOpponentDeck();
-        }
         if(outCome <= 1 ){
             setTimeout(function(){
-                flushBothHands()
-                console.log(playerHand);
                 connHelper.sRest();
             },2000);
             return 0;
@@ -128,33 +121,27 @@ var battlePhase = function(){
     
     if(value)//if war is true
     {
-        for(var i = 2; i < 5; i++){
-            addCardPlayingField('player',i,deckObject.removeTopCard(),false,true);
+        if( playingField.getHandSize.player() === 1){
+            for(var i = 2; i < 5; i++){
+                addCardPlayingField('player',i,deckObject.removeTopCard(),false,true);
+            }
+            addCardPlayingField('player',i,deckObject.removeTopCard(),true,false);
         }
-        addCardPlayingField('player',i,deckObject.removeTopCard(),true,false)
+        //this is incase double war.  you just want to add one card
+        else{
+            addCardPlayingField('player',playingField.getHandSize.player()+1,deckObject.removeTopCard(),true,false);
+        }
     }
+    //this is incase double war.  you just want to add one card
+
 } 
 
 var flipOppenentsCard = function(){
-    $('#opponentCardObject1').toggleClass('flippedToBack');
+    $('#opponentCardObject'+playingField.getHandSize.opponent()).toggleClass('flippedToBack');
     battlePhase();
 }
 
-var addELForFlip = function(id){
-    console.log("click");
-    //if the cards on its back then you can flip it
-    var that = $('#' + id);//this is stupid
-    if(that.hasClass('flippedToBack')){
-        that.toggleClass('flippedToBack');
-        //check to see if the other players deckObject flipped
-        console.log("oppenents size " + playingField.getHandSize.opponent());
-        connHelper.sFlipCard();
-        if(playingField.getHandSize.opponent() >= 1){
-            battlePhase();
-        }
-    };
 
-};
 /*
 type = player or opponent
 number = is the index value of the item so the first one 1 and so on
@@ -168,23 +155,36 @@ var createNewCard = function(type, number,value){
     clone.childNodes[1].childNodes[1].childNodes[1].childNodes[0].innerHTML  = value;
     return clone.childNodes[1];
 };
+
 /*
 type = player or opponent
 number = is the index value of the item so the first one 1 and so on
 eventHandler = if its attached to a event handler or not
-flippedToBack = is a class and the value accepted are true or false
+flippedToBack = is a class and the value accepted are true or false. false being you don't want it anymore
 */
 var addCardPlayingField = function(type,number,cardValue,eventHandler,flippedToBack){
 
     var element = createNewCard(type,number,cardValue);
-    
     if(flippedToBack){
-        element.childNodes[1].classList.remove("flippedToBack");
+        element.childNodes[1].className = "card";
     }
-    //i get the object back so if i need to add a event listener i can just append it on
-    var appended = $('#' + type).append(element)
+    else{
+        element.childNodes[1].className = "card flippedToBack";
+    }
+    $('#' + type).append(element)
     if(eventHandler){
-        appended.click(function(){ addELForFlip('playerCardObject' + number); });
+        $("#"+type+"CardObject"+number).on('click', function(){
+            console.log("click");
+            if($(this).hasClass('flippedToBack')){
+                $(this).toggleClass('flippedToBack');
+                //check to see if the other players deckObject flipped
+                console.log("oppenents size " + playingField.getHandSize.opponent());
+                connHelper.sFlipCard();
+                if(playingField.getHandSize.opponent() >= 1){
+                    battlePhase();
+                }
+            };
+        });
     }
     if(type == "player"){
         playingField.addCard.player(cardValue);
@@ -192,7 +192,6 @@ var addCardPlayingField = function(type,number,cardValue,eventHandler,flippedToB
     else if(type == "opponent"){
         playingField.addCard.opponent(cardValue);
     }
-    
 }
 
 

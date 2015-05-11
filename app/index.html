@@ -8,8 +8,10 @@
 </head>
 	<link rel="stylesheet" href="./styles/main.css" type="text/css" />
 	<link rel="stylesheet" href="./styles/card.css" type="text/css" />
+	<link rel="stylesheet" href="./styles/navigation.css" type="text/css" />
 <body>
-	<div id="gameConnectionBox"><!-- used to center the inner content-->
+	<!-- used to center the inner content-->
+	<div id="gameConnectionBox">
 		<div id="gameConnectionInnerBox">
 			<div>
 				<p>my id</p>
@@ -20,30 +22,37 @@
 			<p>&hearts;</p>
 		</div>
 	</div>
-
-	
-	
-
-	
-	<section id="opponent" class="cardArea">
-	</section>
-	<section id="player" class="cardArea">
-	</section>
-	<div class="deck">
+	<ul class="navigation">
+		<li class="nav-item"><a href="#">asdf</a></li>
+		<li class="nav-item"><a href="#">ddd</a></li>
+		<li class="nav-item"><a href="#">dddd</a></li>
+		<li class="nav-item"><a href="#">dddd</a></li>
 		
-	</div>
-	
-	<div id="chat">
-		<div id="chatDialog">
-			
+		<div id="chat">
+			<div id="chatDialog">
+				
+			</div>
+			<p>chat goes here</p>
+			<input type="text" name="chatInput" id="chatInput"/>
+			<button id="chatEntered">
+				enter chat
+			</button>
 		</div>
-		<p>chat goes here</p>
-		<input type="text" name="chatInput" id="chatInput"/>
-		<button id="chatEntered">
-			enter chat
-		</button>
-	</div>
+	</ul>
 	
+	<input type="checkbox" id="nav-trigger" class="nav-trigger"/>
+	<label for="nav-trigger"></label>
+	<div class="site-wrap">
+		<section id="opponent" class="cardArea">
+		</section>
+		<section id="player" class="cardArea">
+		</section>
+		<div>
+			<p id="playerCardCount">asdf</p>
+			<div class="deck">
+			</div>
+		</div>
+	</div><!-- end of site wrap-->
 	
 	<!-- can't change how this element looks because i did a lot of childNodes stuff -->
 	<template>
