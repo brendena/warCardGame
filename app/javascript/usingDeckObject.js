@@ -79,16 +79,25 @@ var playingField = function(){
         if(outCome === 2){
             return 1;
         }
-        else  if( outCome  === 1){ //player wins
-            addPlayersHandBackToDeck();
-        }
         if(outCome <= 1 ){
             setTimeout(function(){
-                connHelper.sRest();
+                if( outCome  === 1){ //player wins
+                    addPlayersHandBackToDeck();
+                    for(var i = 1; i <= playingField.getHandSize.player(); i++){
+                        animate.toDeck("player",$("#player .container:last"));
+                        animate.toDeck("player",$("#opponent .container:last"))
+                    }
+                }
+                if( outCome === 0){
+                    for(var i = 1; i <= playingField.getHandSize.player(); i++){
+                        animate.toDeck("opponent",$("#player .container:last"));
+                        animate.toDeck("opponent",$("#opponent .container:last"))
+                    }
+                }
+                playingField.handReset();
             },2000);
             return 0;
         }
-        
     };
     
     var war = function(oCard, pCard){
@@ -198,8 +207,6 @@ var battlePhase = function(){
             addCardPlayingField('player',playingField.getHandSize.player()+1,deckObject.removeTopCard(),true,false);
         }
     }
-    //this is incase double war.  you just want to add one card
-
 } 
 
 var flipOppenentsCard = function(){

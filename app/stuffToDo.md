@@ -4,7 +4,7 @@
 
 //got to add the ability to screen grab a icon for url
 
-//animations
+//have a ready button that light up b
 
 //get the chat back up and running in side bar
 

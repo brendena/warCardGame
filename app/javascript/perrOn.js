@@ -31,15 +31,6 @@ peer.on('connection', function(othersConn) {
     else if(data.hasOwnProperty('chat')){
         addDialog(data.chat,true)
     }
-    else if(data.hasOwnProperty('reset')){
-        
-        for(var i = 1; i <= playingField.getHandSize.player(); i++){
-            animate.toDeck("player",$("#player .container:last"));
-            animate.toDeck("opponent",$("#opponent .container:last"))
-        }
-        playingField.handReset();
-        console.log("reset");
-    }
     else{
         console.log(data);
     }
@@ -75,12 +66,6 @@ var connHelper  = function(){
         conn.send({'chat': value});
     };
     /*
-        Purpose: to turn the cards on the playing field to both 0
-    */
-    var sendReset = function(){
-        conn.send({'reset':true});
-    };
-    /*
         Purpose: is to make connection if its not init
     */
     var connInit = function(connection, callBackFunction){
@@ -94,7 +79,6 @@ var connHelper  = function(){
       sFlipCard : sendFlipCard,
       sCardSent : sendCardSent,
       sChatMessage :sendChatMessage,
-      sRest :  sendReset,
       init: connInit
     };
 }();
